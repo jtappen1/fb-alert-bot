@@ -1,4 +1,4 @@
-from dataset.dataset import create_splits
+from src.dataset.dataset import create_splits
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error, r2_score
@@ -18,7 +18,7 @@ def select_model(model_type: ModelType) -> tuple[object, str]:
             min_samples_split=2,
             random_state=42,
             n_jobs=-1
-        ), "random_forest_model.pkl"
+        ), "random_forest_model"
     else:
         return GradientBoostingRegressor(
             n_estimators=400,
@@ -26,7 +26,7 @@ def select_model(model_type: ModelType) -> tuple[object, str]:
             max_depth=6,
             subsample=0.8,
             random_state=42
-        ), "gradient_boosting_model.pkl"
+        ), "gradient_boosting_model"
     
 
 def train_model(model_type: ModelType):
@@ -46,9 +46,13 @@ def train_model(model_type: ModelType):
     print("Train R2:", r2_score(y_train, train_pred))
     print("Test  R2:", r2_score(y_test, test_pred))
 
-    with open("models/" + model_filename, "wb") as f:
+    with open("models/" + model_filename + ".pkl", "wb") as f:
         pickle.dump(model, f)
-    print(f"Saved: {model_filename}")
+        print(f"Saved: {model_filename}")
+
+    feature_columns = X_train.columns.tolist()
+    with open("models/" + model_filename + "_features.pkl", "wb") as f:
+        pickle.dump(feature_columns, f)
 
 if __name__ == "__main__":
     train_model(ModelType.RF)
