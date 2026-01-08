@@ -1,4 +1,4 @@
-from data.dataset import create_splits
+from dataset.dataset import create_splits
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import math

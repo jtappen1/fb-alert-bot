@@ -16,7 +16,9 @@ def create_splits():
             "Epiphone",
             "Jackson",
             "LTD",
-            "Yamaha"
+            "Yamaha",
+            "Squier",
+            "Donner"
         ]
         for brand in brands:
             if brand.lower() in title.lower():
@@ -86,6 +88,8 @@ def create_splits():
     df['year'] = df['title'].apply(extract_year)
     df['decade'] = (df['year'] // 10) * 10
     df['decade'] = df['decade'].fillna(0)
+    df['discount_pct'] = ((df['original_price'] - df['price']) / df['original_price']).fillna(0)
+
 
 
     # Convert categorical features to numerical using one-hot encoding
